@@ -15,9 +15,10 @@ function* fetchItems() {
     } 
 }
 
-function* addItem(){
+function* addItem(action){
     try {
-        yield axios.post('/api/shelf')
+        yield axios.post('/api/shelf', action.payload);
+        console.log('in item POST: ', action.payload);
         yield put({
             type: 'FETCH_ITEMS'
         })

@@ -31,10 +31,14 @@ handleChange = (event, property)=>{
   })
 }
 
-handleSubmit = ()=>{
+handleClick = ()=>{
   this.props.dispatch({
     type: 'ADD_ITEM',
     payload: this.state
+  })
+  this.setState({
+    description: '',
+    image_url: ''
   })
 }
 
@@ -54,8 +58,8 @@ handleSubmit = ()=>{
 
     return (
       <div>
-        <input type="text" placeholder="item description" onChange={(event)=>{this.handleChange(event, 'description')}}/>
-        <input type="url" placeholder="image url" onChange={(event)=>{this.handleChange(event, 'image_url')}}/>
+        <input type="text" placeholder="item description" value={this.state.description} onChange={(event)=>{this.handleChange(event, 'description')}}/>
+        <input type="url" placeholder="image url" value={this.state.image_url} onChange={(event)=>{this.handleChange(event, 'image_url')}}/>
         <button onClick = {this.handleClick}>Add Item</button>
         <table>
           <thead>
