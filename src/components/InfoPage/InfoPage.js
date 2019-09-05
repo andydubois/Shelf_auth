@@ -20,6 +20,9 @@ getItems() {
 }
 
   render() {
+
+  console.log('item is:', this.props.store.itemsReducer);
+  
     return (
       <div>
         <p>
