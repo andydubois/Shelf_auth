@@ -58,7 +58,7 @@ handleClick = ()=>{
         <tr>
           <td><img src={item.image_url}/></td>
           <td>{item.description}</td>
-          <td><button onClick={this.handleDelete(item.id)}>Delete</button></td>
+          <td><button onClick={() => this.handleDelete(item.id)}>Delete</button></td>
         </tr>
       )
     })
