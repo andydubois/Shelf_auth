@@ -15,7 +15,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     pool.query(queryText)
         .then(result => {
             console.log('in item GET', result.rows);
-            
+
             res.send(result.rows)
         })
         .catch(error => {
@@ -45,8 +45,34 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 /**
  * Delete an item if it's something the logged in user added
  */
-router.delete('/:id', (req, res) => {
-
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+    console.log('user:', req.user);
+    
+    let queryCheck = `SELECT * FROM "item" WHERE "id" = $1;`;
+    pool.query(queryCheck, [req.params.id])
+        .then(result => {
+            console.log('queryCheck response:', result.rows[0].user_id, req.user.id);
+            if (result.rows[0].user_id === req.user.id) {
+                
+                let queryText = `DELETE FROM "item" WHERE "id" = $1 AND "user_id" = $2;`;
+                pool.query(queryText, [req.params.id, req.user.id])
+                    .then(result => {
+                        res.sendStatus(200)
+                    })
+                    .catch(error => {
+                        res.sendStatus(500)
+                    })
+            } else {
+                console.log('queryCheck after else block:', result.rows, req.user.id);
+                
+                res.sendStatus(403);
+            }
+        })
+        .catch(error => {
+            console.log('error in check:', error);
+            res.sendStatus(500);
+        })
+    
 });
 
 
