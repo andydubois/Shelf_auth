@@ -10,10 +10,9 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
  */
 router.get('/', rejectUnauthenticated, (req, res) => {
     //this selects each users specific items
-    let queryText = `SELECT * from "item"
-                    WHERE "user_id" = $1;`;
+    let queryText = `SELECT * from "item";`;
     //req.user.id is the id of the logged in user!
-    pool.query(queryText, [req.user.id])
+    pool.query(queryText)
         .then(result => {
             console.log('in item GET', result.rows);
             
