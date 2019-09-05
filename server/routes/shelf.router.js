@@ -2,11 +2,27 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
+//importing rejecUnauthenticated so we can only see items if a user is logged in
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+
 /**
  * Get all of the items on the shelf
  */
-router.get('/', (req, res) => {
-    res.sendStatus(200); // For testing only, can be removed
+router.get('/', rejectUnauthenticated, (req, res) => {
+    //this selects each users specific items
+    let queryText = `SELECT * from "item"
+                    WHERE "user_id" = $1;`;
+    //req.user.id is the id of the logged in user!
+    pool.query(queryText, [req.user.id])
+        .then(result => {
+            console.log('in item GET', result.rows);
+            
+            res.send(result.rows)
+        })
+        .catch(error => {
+            console.log('error in item GET', error);
+            res.sendStatus(500);
+        })
 });
 
 
