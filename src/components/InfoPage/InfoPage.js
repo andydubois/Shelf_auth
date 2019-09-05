@@ -31,6 +31,13 @@ handleChange = (event, property)=>{
   })
 }
 
+handleDelete = (id) => {
+  this.props.dispatch({
+    type: 'DELETE_ITEM',
+    payload: id
+  })
+}
+
 handleClick = ()=>{
   this.props.dispatch({
     type: 'ADD_ITEM',
@@ -51,7 +58,7 @@ handleClick = ()=>{
         <tr>
           <td><img src={item.image_url}/></td>
           <td>{item.description}</td>
-          <td><button>Delete</button></td>
+          <td><button onClick={this.handleDelete(item.id)}>Delete</button></td>
         </tr>
       )
     })
