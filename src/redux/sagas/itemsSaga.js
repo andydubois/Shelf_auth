@@ -15,8 +15,20 @@ function* fetchItems() {
     } 
 }
 
+function* addItem(){
+    try {
+        yield axios.post('/api/shelf')
+        yield put({
+            type: 'FETCH_ITEMS'
+        })
+    } catch (err) {
+        console.log('error in ITEM POST:', err)
+    }
+}
+
 function* itemsSaga() {
     yield takeEvery('FETCH_ITEMS', fetchItems);
+    yield takeEvery('ADD_ITEM', addItem);
 }
 
 export default itemsSaga;
