@@ -30,6 +30,19 @@ function* addItem(action){
 function* itemsSaga() {
     yield takeEvery('FETCH_ITEMS', fetchItems);
     yield takeEvery('ADD_ITEM', addItem);
+    yield takeEvery('DELETE_ITEM', deleteItem)
+}
+
+function* deleteItem(action) {
+    try {
+        yield axios.delete(`/api/shelf/${action.payload}`);
+        console.log('item DELETE route', action.payload);
+        yield put ({
+            type: 'FETCH_ITEMS'
+        })
+    } catch (error) {
+        console.log('error in client side DELETE', error)
+    }
 }
 
 export default itemsSaga;
